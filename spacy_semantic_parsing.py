@@ -1,3 +1,14 @@
+"""
+Trying to do semantic parsing (e.g. turning a sentence into subject, verb, etc)
+with common NLP libaries. I've tried spaCy and NLTK however they don't seem
+accurate.
+
+
+"""
+
+
+
+
 import spacy
 
 # Load the English language model
