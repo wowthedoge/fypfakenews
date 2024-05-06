@@ -15,7 +15,8 @@ import spacy
 nlp = spacy.load("en_core_web_sm")
 
 # Your sentence
-sentence = "I do my work in the library today."
+sentence = "Voice actor Lee Woo Ri passes away at age 27."
+print("Sentence: ", sentence)
 doc = nlp(sentence)
 
 # Initialize lists for subjects, verbs, objects, adverbials, and prepositional phrases
