@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Detector</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Your custom CSS file -->
+</head>
+<body>
+    <header class="bg-dark">
+        <div class="container">
+            <h1 class="text-white text-center py-3">Explainable Fake News Detector</h1>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="input-group mb-3">
+                        <textarea id="inputText" class="form-control" rows="5" placeholder="Enter Text"></textarea>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="button" onclick="detectFakeNews()">Detect</button>
+                        </div>
+                    </div>
+                    <div class="output-section">
+                        <p id="outputResult" class="font-weight-bold"></p>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header">
+                            Similar Articles & Words
+                        </div>
+                        <div id="similarList" class="card-body">
+                            <!-- Similar articles and words will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer bg-dark text-white py-3 text-center fixed-bottom">
+        <div class="container">
+            <p>&copy; 2024 Team MCS15 FIT3162</p>
+        </div>
+    </footer>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script> <!-- Your custom JavaScript file -->
+</body>
+</html>
