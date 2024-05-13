@@ -1,23 +1,59 @@
 from flask import Flask, request, jsonify
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import make_pipeline
 from lime.lime_text import LimeTextExplainer
+import requests
+import os.path
 import joblib
+from tqdm import tqdm
+
+def download_file(url, filename):
+
+    if os.path.isfile(filename):  # Check if the file already exists
+        print(f"File '{filename}' already exists. Skipping download.")
+        return
+    # Make a request to download the file
+    response = requests.get(url, stream=True)
+    
+    # Get the total file size from the response headers
+    total_size = int(response.headers.get('content-length', 0))
+    
+    # Initialize the progress bar
+    progress_bar = tqdm(total=total_size, unit='B', unit_scale=True)
+    
+    # Write the downloaded data to a file
+    with open(filename, 'wb') as file:
+        for data in response.iter_content(chunk_size=1024):
+            file.write(data)
+            progress_bar.update(len(data))
+    
+    # Close the progress bar
+    progress_bar.close()
+
+try:
+    model_url = 'https://github.com/wowthedoge/fypfakenews/releases/download/v1.0/lime_ml_model.pkl'
+    model_filename = 'lime_ml_model.pkl'
+    print("Downloading model...")
+    download_file(model_url, model_filename)
+    print("Model downloaded. Loading model...")
+    model = joblib.load(model_filename)
+    print("Model loaded.")
+except Exception as e:
+    print(e)
+
+try:
+    vectorizer_url = 'https://github.com/wowthedoge/fypfakenews/releases/download/v1.0/tfidf_vectorizer.pkl'
+    vectorizer_filename = 'tfidf_vectorizer.pkl'
+    print("Downloading vectorizer...")
+    download_file(vectorizer_url, vectorizer_filename)
+    print("Vectorizer downloaded. Loading vectorizer...")
+    vectorizer = joblib.load(vectorizer_filename)
+    print("Vectorizer loaded.")
+except Exception as e:
+    print(e)
 
 app = Flask(__name__)
 
-# Load your trained model and vectorizer
-# You can load these objects from disk or define them here if they're small
-
-# Load the trained model
-model = joblib.load('lime_ml_model.pkl')
-
-# Load the TF-IDF vectorizer
-tfidf_vc = joblib.load('tfidf_vectorizer.pkl')
-
-pipeline = make_pipeline(tfidf_vc, model)
+pipeline = make_pipeline(vectorizer, model)
 
 # Set up LIME explainer
 class_names = ["Real", "Fake"]
@@ -36,9 +72,6 @@ def predict():
 
     # Format the explanation for display
     explanation = exp.as_list()
-
-    print("SAVING TO HTML")
-    exp.save_to_file('temp.html')
 
     # Prepare response
     response = {
