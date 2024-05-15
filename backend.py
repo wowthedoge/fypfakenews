@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from sklearn.pipeline import make_pipeline
 from lime.lime_text import LimeTextExplainer
 import requests
@@ -52,6 +53,7 @@ except Exception as e:
     print(e)
 
 app = Flask(__name__)
+CORS(app)
 
 pipeline = make_pipeline(vectorizer, model)
 
@@ -63,6 +65,8 @@ explainer = LimeTextExplainer(class_names=class_names)
 def predict():
     # Receive input text from the frontend
     input_text = request.json['text']
+
+    print("RECEIVED TEXT:", input_text)
 
     # Perform prediction
     prediction_proba = pipeline.predict_proba([input_text])[0, 1]
